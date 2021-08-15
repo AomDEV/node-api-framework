@@ -1,0 +1,33 @@
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [
+      "tsconfig-paths/register",
+      "typescript-transform-paths/register"
+    ]
+  },
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "module": "commonJS",
+    "target": "es5",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "esModuleInterop": true,
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "plugins": [
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ],
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
