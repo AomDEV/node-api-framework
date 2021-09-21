@@ -6,7 +6,7 @@ import getAll from "./category/get-all";
 const router = express.Router();
 
 //router.use(RequiredToken());
-router.get('/something', makeHandler(getAll));
-router.get('/something/:id', makeHandler(getData));
+router.get('/something', makeHandler(getAll, {useCache:true}));
+router.get('/something/:id', makeHandler(getData, {useCache:true}));
 
 export default router;
