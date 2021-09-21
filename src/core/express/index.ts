@@ -51,7 +51,7 @@ class Application{
                     if(val.route) {
                         val = val.route;
                         var _o:any = {};
-                        _o[val.stack[0].method]  = [baseUrl + val.path];    
+                        _o[val.stack[0].method.toUpperCase()]  = [baseUrl + val.path];    
                         table.push(_o);
                     }       
                 }
