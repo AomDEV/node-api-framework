@@ -1,5 +1,4 @@
-import CustomError from "@/core/exception";
-import { ExpressMiddleware } from "@/core/types/core";
+import { ExpressMiddleware } from "@/core/types";
 import express from "express";
 import { DebugError } from ".";
 import ExceptionBuilder from "./exception-builder";
