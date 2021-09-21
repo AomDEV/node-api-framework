@@ -2,10 +2,9 @@ import express from "express";
 import { CacheName, Client } from ".";
 import * as dotenv from "dotenv";
 
-export default (request: express.Request) => {
+export default (key: string) => {
     dotenv.config();
-    const cacheName = CacheName(request);
-    if (parseInt((process.env.ENABLE_REDIS ?? "0")) === 1) 
-        return Client.get(cacheName);
+    if (parseInt((process.env.ENABLE_REDIS ?? "0")) === 1 && key.length > 0) 
+        return Client.get(key);
     return null;
 }

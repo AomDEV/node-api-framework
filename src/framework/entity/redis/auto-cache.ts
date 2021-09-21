@@ -2,9 +2,9 @@ import { MakeHandlerOptions } from "@/core/types";
 import { ExpressFormater, SetCache } from ".";
 import express from "express";
 
-export default (request: express.Request, ResponseData: any, StatusCode: number, options?: MakeHandlerOptions) => {
+export default (key: string, ResponseData: any, StatusCode: number, options?: MakeHandlerOptions) => {
     let CacheResponse = ExpressFormater(ResponseData, StatusCode);
-    if (options?.useCache === true) {
-        SetCache(request, JSON.stringify(CacheResponse));
+    if (options?.useCache === true && key.length > 0) {
+        SetCache(key, JSON.stringify(CacheResponse));
     }
 }
