@@ -1,21 +1,27 @@
 import express from "express"
-import CustomError from "@/core/exception";
-import ErrorBuilder from "@/core/express/error"
-import internalServer from "./error/internal-server";
+import { ExpressHandler } from "@/core/types";
+import { ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
+import * as dotenv from "dotenv";
 
-export const makeHandler = function (Handler: Function){
+export const makeHandler = function (Handler: Function) : ExpressHandler{
+    dotenv.config();
     return async function(request: express.Request, response: express.Response){
         var Status = false;
         var Result = null;
-        var exception;
+        var exceptionResponse = null;
         try{
             Result = await Handler(request);
-            Status = true;
+            let IsResultOverrideStatus = IsOverridedStatus(Result);
+            Status = (typeof Result === 'boolean' || IsResultOverrideStatus) ? Result : true;
+            if(Result !== null) delete Result.status;
         } catch (ex){
-            var IsCustomError = ex instanceof CustomError;
-            exception = (IsCustomError) ? ErrorBuilder(ex.message, ex.errorCode) : internalServer;
+            var ProductionEnvironment = parseInt(process.env.PRODUCTION_ENVIRONMENT ?? "0");
+            if(ProductionEnvironment === 0) throw ex;
+            const { exception, errorCode } = ExceptionBuilder(ex);
+            exceptionResponse = exception;
+            response.status(errorCode);
         } finally{
-            response.json(exception || {status: Status, data: Result});
+            response.json(exceptionResponse || {status: Status, data: Result});
         }
     };
 };
