@@ -1,5 +1,5 @@
 import express from 'express'
-import {exampleEntity} from '@/framework/entity/example'
+import {example} from '@/framework/entity/example'
 import CustomError from '@/core/exception';
 
 export default async function (request: express.Request){
@@ -7,7 +7,7 @@ export default async function (request: express.Request){
     if(isNaN(Number(id))) throw new CustomError("ID is not a numeric", 400);
     const parsed = parseInt(id);
     return {
-        id: parsed,
-        callback: await exampleEntity().findData(parsed)
+        price: parsed,
+        callback: await example().CalculateTaxFee(parsed, 7)
     }
 }
