@@ -1,2 +1,2 @@
 import error from "@/core/express/error"
-export default error("No resource found", 404);
+export default error("No resource found");
