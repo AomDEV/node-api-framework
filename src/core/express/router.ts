@@ -1,11 +1,12 @@
 import express from "express"
 import { DebugError, ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
-import { ClearCache, ExpressFormater, SetCache, AutoResponse, AutoCache } from "@/framework/entity/redis";
+import { ClearCache, AutoResponse, AutoCache, CacheName } from "@/framework/entity/redis";
 import { MakeHandlerOptions, ExpressHandler } from "@/core/types";
 
 export const makeHandler = function (Handler: Function, options?: MakeHandlerOptions) : ExpressHandler{
     return async function(request: express.Request, response: express.Response){
-        if(options === null) ClearCache(request);
+        let redisKey = CacheName(request);
+        if(options === null) ClearCache(redisKey);
         // Cache Reader
         let autoResponseResult = await AutoResponse(request, response, options);
         if(autoResponseResult) return;
@@ -27,7 +28,7 @@ export const makeHandler = function (Handler: Function, options?: MakeHandlerOpt
             DebugError(ex as Error);
         } finally{
             let ResponseData = exceptionResponse || {status: Status, data: Result};
-            AutoCache(request, ResponseData, statusCode, options);
+            AutoCache(redisKey, ResponseData, statusCode, options);
             response.json(ResponseData);
         }
     };
