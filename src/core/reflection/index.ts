@@ -30,11 +30,19 @@ class Reflection {
         const baseIndex :string = "route.ts";
         return (await this.SearchFile(Path, baseIndex, false)).map((x:string)=>{
           var Directories = x.replace(`\\${baseIndex}`,"").split("\\");
-          return {
-            path: x,
-            category: (Directories.length <= 0)? "" : `/${Directories[Directories.length - 1]}`,
-            router: require(x).default
+          var TrashIndex = 0;
+          for(let i = 0; i < Directories.length; i++){
+            TrashIndex = i + 1;
+            if (Directories[i] === 'src') break;
           }
+          Directories.splice(0, TrashIndex);
+          var ImportPath = `@/${Directories.join('/')}/${baseIndex}`;
+          var Result = {
+            path: ImportPath,
+            category: (Directories.length <= 0)? "" : `/${Directories[Directories.length - 1]}`,
+            router: require(ImportPath).default
+          }
+          return Result;
         });
       } catch (ex){ return []; }
     }
