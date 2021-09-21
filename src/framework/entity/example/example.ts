@@ -1,12 +1,10 @@
-import {find} from "@/framework/database/example"
 export default ()=>{
-    const finder = new find();
     return {
-        getAll: ()=>{
-            return finder.findAll();
+        CalculateTaxFee: (fullAmount: number, taxFee: number)=>{
+            return fullAmount * (taxFee / 100);
         },
-        findData: (ID: number)=>{
-            return finder.findBy({id: ID});
+        CalculatePriceIncTaxFee(fullAmount: number, taxFee: number){
+            return fullAmount + (this.CalculateTaxFee(fullAmount, taxFee));
         }
     }
 }
