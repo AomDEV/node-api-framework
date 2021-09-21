@@ -1,7 +1,6 @@
-export default function (message: string, code: number){
+export default function (message: string){
     return {
         status: false,
-        message: message,
-        code: code
+        message: message
     }
 };
