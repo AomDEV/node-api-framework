@@ -1,4 +1,4 @@
-import {ExpressHandler} from "./core";
+import {ExpressHandler, ExpressMiddleware, MakeHandlerOptions, RedisCacheResponse} from "./core";
 
 
-export type {ExpressHandler};
+export type {ExpressHandler, ExpressMiddleware, MakeHandlerOptions, RedisCacheResponse};
