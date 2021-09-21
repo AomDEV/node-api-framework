@@ -1,6 +1,6 @@
 import express from "express"
 import { ExpressHandler } from "@/core/types";
-import { ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
+import { DebugError, ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
 import * as dotenv from "dotenv";
 
 export const makeHandler = function (Handler: Function) : ExpressHandler{
@@ -15,11 +15,10 @@ export const makeHandler = function (Handler: Function) : ExpressHandler{
             Status = (typeof Result === 'boolean' || IsResultOverrideStatus) ? Result : true;
             if(Result !== null) delete Result.status;
         } catch (ex){
-            var ProductionEnvironment = parseInt(process.env.PRODUCTION_ENVIRONMENT ?? "0");
-            if(ProductionEnvironment === 0) throw ex;
             const { exception, errorCode } = ExceptionBuilder(ex);
             exceptionResponse = exception;
             response.status(errorCode);
+            DebugError(ex as Error);
         } finally{
             response.json(exceptionResponse || {status: Status, data: Result});
         }
