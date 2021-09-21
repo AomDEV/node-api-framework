@@ -6,6 +6,11 @@
       "typescript-transform-paths/register"
     ]
   },
+  "typeAcquisition": {
+      "include": [
+          "jest"
+      ]
+  },
   "compilerOptions": {
     "experimentalDecorators": true,
     "module": "commonJS",
@@ -25,9 +30,16 @@
     "plugins": [
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./@types", "./node_modules/@types"],
+    "types": ["jest", "node", "@types/jest"],
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.spec.ts"
+  ],
+  "compileOnSave": true,
+  "include": [
+    "src/**/*.ts"
   ]
 }
