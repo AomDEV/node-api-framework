@@ -1,14 +1,19 @@
 import express from "express"
-import { ExpressHandler } from "@/core/types";
 import { DebugError, ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
-import * as dotenv from "dotenv";
+import { ClearCache, ExpressFormater, SetCache, AutoResponse, AutoCache } from "@/framework/entity/redis";
+import { MakeHandlerOptions, ExpressHandler } from "@/core/types";
 
-export const makeHandler = function (Handler: Function) : ExpressHandler{
-    dotenv.config();
+export const makeHandler = function (Handler: Function, options?: MakeHandlerOptions) : ExpressHandler{
     return async function(request: express.Request, response: express.Response){
+        if(options === null) ClearCache(request);
+        // Cache Reader
+        let autoResponseResult = await AutoResponse(request, response, options);
+        if(autoResponseResult) return;
+
         var Status = false;
         var Result = null;
         var exceptionResponse = null;
+        var statusCode = 200;
         try{
             Result = await Handler(request);
             let IsResultOverrideStatus = IsOverridedStatus(Result);
@@ -17,10 +22,13 @@ export const makeHandler = function (Handler: Function) : ExpressHandler{
         } catch (ex){
             const { exception, errorCode } = ExceptionBuilder(ex);
             exceptionResponse = exception;
+            statusCode = errorCode;
             response.status(errorCode);
             DebugError(ex as Error);
         } finally{
-            response.json(exceptionResponse || {status: Status, data: Result});
+            let ResponseData = exceptionResponse || {status: Status, data: Result};
+            AutoCache(request, ResponseData, statusCode, options);
+            response.json(ResponseData);
         }
     };
 };
