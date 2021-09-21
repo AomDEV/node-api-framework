@@ -1,7 +1,9 @@
 import API from '@/framework/application'
 
-const app = new API();
+const app: API = new API();
 
-app.SetApiVersion("v1");
+app.SetApiVersion(process.env.API_VERSION || "v1");
 app.SetRoutePath(`/api/${app.apiVersion}`);
 app.Start();
+
+export default app;
