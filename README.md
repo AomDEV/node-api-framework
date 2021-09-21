@@ -74,13 +74,13 @@
  If you want to change default **PORT**, go to ```src/app.ts``` edit line 7 from ```app.Start();``` to ```app.Start(8080);```
  
  ## TODO
- - [ ] Unit Test support
- - [ ] Custom Middleware feature
- - [ ] Add request validator feature
- - [ ] Built-in UUID
- - [ ] Security feature
+ - [x] Unit Test support
+ - [x] Custom Middleware feature
+ - [x] Add request validator feature
+ - [x] Built-in UUID
+ - [x] Security feature
  - [ ] Docker
  - [ ] Redis Database
  - [ ] Performance improve
- - [ ] Route path customizable
- - [ ] Reflection improve
+ - [x] Route path customizable
+ - [x] Reflection improve
