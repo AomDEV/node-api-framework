@@ -3,7 +3,7 @@ import express from "express";
 import { GetCache } from "@/framework/entity/redis";
 
 export default async (request:express.Request, response: express.Response, options?: MakeHandlerOptions) => {
-    if(options?.useCache) {
+    if(options?.useCache === true) {
         let cache = await GetCache(request);
         if(cache){
             let parsedCache: RedisCacheResponse = JSON.parse(cache);
