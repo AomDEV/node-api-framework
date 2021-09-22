@@ -1,3 +1,3 @@
 import Example from "./example";
 
-export {Example};
+export default {Example};

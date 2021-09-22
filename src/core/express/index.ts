@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import { Server } from 'http';
 import { cd } from "@/framework/entity/core";
 import { Client } from "@/framework/entity/redis";
+import * as Databases from "@/framework/database";
 
 class Application{
     private _express : express.Express;
@@ -106,6 +107,19 @@ class Application{
 
     public getUnitTest(){
         return this._unitTest;
+    }
+
+    public truncateDB(){
+        const collections = Object.keys(Databases);
+        const DatabasesCast = Databases as any;
+        let Errors = [];
+        for(let collection of collections){
+            try{
+                let table = DatabasesCast[collection];
+                table.truncate();
+            } catch (ex){ Errors.push(ex); }
+        }
+        return Errors;
     }
 
     public close(){

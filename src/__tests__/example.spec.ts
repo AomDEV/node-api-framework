@@ -26,5 +26,6 @@ describe("An example api endpoint", () => {
 });
 
 afterAll(() => {
+    app.truncateDB();
     app.close();
 });

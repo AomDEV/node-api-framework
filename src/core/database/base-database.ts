@@ -69,5 +69,8 @@ class BaseDatabase {
             ...Options
         });
     }
+    public truncate(){
+        this.table().deleteMany({});
+    }
 }
 export default BaseDatabase;
