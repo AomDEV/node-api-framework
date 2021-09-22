@@ -10,7 +10,9 @@
     "prisma:merge": "python prisma/merge.py",
     "prisma:migrate": "npm run prisma:merge && npx prisma migrate dev --name init",
     "build": "tsc -b .",
-    "prod": "ts-node dist/app.js"
+    "production": "ts-node dist/app.js",
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker-compose down"
   },
   "jest": {
     "moduleDirectories": [

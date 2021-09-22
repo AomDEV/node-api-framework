@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+  redis:
+    image: "redis:6.2.5-alpine"
+    container_name: Redis
+    command: redis-server --requirepass Bx6ZVzHA8we@D_hZ
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /var/lib/redis
+      - /usr/local/etc/redis/redis.conf
+    environment:
+      REDIS_REPLICATION_MODE: master
+    networks:
+      - services_net
+  db:
+    image: mysql:5.7
+    container_name: Database
+    restart: always
+    volumes: 
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: dev_app
+      MYSQL_PASSWORD: FM%z9_%=9H2ckSmA
+      MYSQL_ROOT_PASSWORD: FM%z9_%=9H2ckSmA
+    ports:
+      - "3306:3306"
+    networks:
+      - services_net
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpMyAdmin
+    restart: always
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    networks:
+      - services_net
+
+networks:
+  services_net:
+    name: services_backend
+volumes:
+  db_data:
+    name: DatabaseVolume
