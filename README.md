@@ -203,7 +203,7 @@ export {OtherTable, Example};
  
  
  ### - การเขียน Unit Test
- *สามารถดูตัวอย่างจากไฟล์ในโฟลเดอร์ src/__tests__/example.spec.ts*  
+ *สามารถดูตัวอย่างจากไฟล์ในโฟลเดอร์ src/\_\_tests__/example.spec.ts*  
  หากต้องการรัน Unit Test ให้ใช้คำสั่ง
  ```
  npm run test
