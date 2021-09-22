@@ -1,9 +1,12 @@
 import express from 'express'
 import {example} from '@/framework/entity/example'
+import { useCache } from '@/framework/entity/redis'
 
 export default async function (request: express.Request){
+    let x = async (a:string)=>"test " + a;
+    let callback = await useCache(example().CalculateTaxFee, 100, 7);
     return {
-        callback: await example().CalculateTaxFee(100,7),
+        callback: callback,
         user: request.user
     }
 }
