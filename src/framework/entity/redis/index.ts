@@ -6,6 +6,18 @@ import ExpressFormater from "./express-formater";
 import FetchCache from "./fetch-cache";
 import useCache from "./use-cache";
 import FunctionFormater from "./function-formater";
-import * as Client from "./redis-client";
+import IsEnabled from "./is-enabled";
+import Client from "./redis-client";
 
-export {SetCache, ClearCache, CacheName, Client, GetCache, ExpressFormater, FetchCache, useCache, FunctionFormater};
+export {
+    SetCache, 
+    ClearCache, 
+    CacheName, 
+    Client, 
+    GetCache, 
+    ExpressFormater, 
+    FetchCache, 
+    useCache, 
+    FunctionFormater,
+    IsEnabled
+};

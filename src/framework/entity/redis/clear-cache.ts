@@ -1,10 +1,9 @@
-import express from "express";
-import { CacheName, Client } from ".";
+import { Client, IsEnabled } from ".";
 import * as dotenv from "dotenv";
 
 export default (key: string) => {
     dotenv.config();
-    if (parseInt((process.env.ENABLE_REDIS ?? "0")) === 1) 
+    if (IsEnabled() === true) 
         return;
-    Client.clear(key);
+    Client().clear(key);
 }
