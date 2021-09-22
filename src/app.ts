@@ -1,6 +1,6 @@
-import API from '@/framework/application'
+import API from '@/framework/application';
 
-const app: API = new API();
+const app = new API();
 
 app.SetApiVersion(process.env.API_VERSION || "v1");
 app.SetRoutePath(`/api/${app.apiVersion}`);
