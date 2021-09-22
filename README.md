@@ -219,7 +219,7 @@ export {OtherTable, Example};
  - [x] Add request validator feature
  - [x] Built-in UUID
  - [x] Security feature
- - [ ] Docker
+ - [x] Docker
  - [x] Redis Database
  - [x] Performance improve
  - [x] Route path customizable
