@@ -225,3 +225,11 @@ export {OtherTable, Example};
  - [x] Route path customizable
  - [x] Reflection improve
  - [ ] CI/CD
+
+## License
+ไม่อนุญาตให้นำไปใช้ในโปรเจ็กท์อื่นที่ไม่ได้รับอนุญาต, การนำไปใช้งานจะ**ต้องได้รับอนุญาต**ก่อนเท่านั้น!
+
+## Contributors
+
+@AomDEV
+[aom.dev](https://aom.dev)
