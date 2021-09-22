@@ -24,7 +24,6 @@
     },
     "esModuleInterop": true,
     "allowJs": true,
-    "noEmit": true,
     "strict": true,
     "moduleResolution": "node",
     "plugins": [
@@ -33,6 +32,10 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./@types", "./node_modules/@types"],
     "types": ["jest", "node", "@types/jest"],
+
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true,
   },
   "exclude": [
     "node_modules",
