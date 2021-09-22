@@ -33,25 +33,23 @@ class Application{
     }
 
     private Separator(){
-        if (!this._unitTest) console.log(`======================================`);
+        if (!this._unitTest) console.log(`==========================================`);
     }
 
     private RenderRoutes(){
         var Table = require('cli-table');
         var table = new Table({ head: ["Method", "Path"] });
-        var baseUrl = this._routePath;
 
         this.Separator();
-        console.log('API for ' + baseUrl + '/*');
     
         for(var routes of this._routes){
-            for (var key in routes) {
-                if (routes.hasOwnProperty(key)) {
-                    var val = routes[key];
+            for (var key in routes.stacks) {
+                if (routes.stacks.hasOwnProperty(key)) {
+                    var val = routes.stacks[key];
                     if(val.route) {
                         val = val.route;
                         var _o:any = {};
-                        _o[val.stack[0].method.toUpperCase()]  = [baseUrl + val.path];    
+                        _o[val.stack[0].method.toUpperCase()]  = [routes.prefix + val.path];    
                         table.push(_o);
                     }       
                 }
@@ -63,7 +61,7 @@ class Application{
 
     protected RegisterRoute(Router : express.Router, Category: string = ""){
         const Prefix = (!Category.includes(this._overrideRoute)) ? `${this._routePath}${Category}` : Category.replace(this._overrideRoute, "");
-        this._routes.push(Router.stack);
+        this._routes.push({prefix: Prefix, stacks:Router.stack});
         this._express.use(Prefix, Router);
     }
 
