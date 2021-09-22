@@ -210,9 +210,7 @@ export {OtherTable, Example};
 
  *Finished!*
  
- ## Note
- If you want to change default **PORT**, go to ```src/app.ts``` edit line 7 from ```app.Start();``` to ```app.Start(8080);```
- 
+
  ## TODO
  - [x] Unit Test support
  - [x] Custom Middleware feature
