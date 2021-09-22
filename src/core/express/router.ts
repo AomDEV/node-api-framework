@@ -1,8 +1,8 @@
 import express from "express"
 import { DebugError, ExceptionBuilder, IsOverridedStatus } from "@/framework/entity/core";
-import { MakeHandlerOptions, ExpressHandler } from "@/core/types";
+import { ExpressHandler } from "@/core/types";
 
-export const makeHandler = function (Handler: Function, options?: MakeHandlerOptions) : ExpressHandler{
+export const makeHandler = function (Handler: Function) : ExpressHandler{
     return async function(request: express.Request, response: express.Response){
         var Status = false;
         var Result = null;
