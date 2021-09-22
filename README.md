@@ -144,6 +144,8 @@ import Example from "./example";
 export {OtherTable, Example};
  ```
  
+ *__หมายเหตุ__ ห้ามแก้ไขไฟล์ schema.prisma, กรณีที่จะแก้ไข Database Provider ให้แก้ไขที่ connection.prisma เท่านั้น*
+ 
  ### - การสร้าง Entity
  ให้สร้างโฟลเดอร์ในการเก็บ entity ให้เป็นหมวดหมู่ตามความเหมาะสม เช่น
  ```
