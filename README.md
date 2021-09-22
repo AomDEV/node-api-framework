@@ -80,7 +80,7 @@
  - [x] Built-in UUID
  - [x] Security feature
  - [ ] Docker
- - [ ] Redis Database
- - [ ] Performance improve
+ - [x] Redis Database
+ - [x] Performance improve
  - [x] Route path customizable
  - [x] Reflection improve
