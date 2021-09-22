@@ -25,6 +25,6 @@ describe("An example api endpoint", () => {
     });
 });
 
-afterAll(async () => {
-    app.getServer().close();
+afterAll(() => {
+    app.close();
 });
