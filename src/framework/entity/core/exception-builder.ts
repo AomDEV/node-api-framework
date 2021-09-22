@@ -15,7 +15,6 @@ export default function(ex: any){
         exception = ErrorBuilder(ex.message);
         errorCode = 401;
     } else{
-        console.log(InstanceName);
         exception = internalServer();
         errorCode = 500;
     }
