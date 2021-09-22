@@ -3,6 +3,8 @@ import error from '@/core/express/middleware/not-found'
 import * as bodyParser from 'body-parser';
 import * as dotenv from "dotenv";
 import { Server } from 'http';
+import { cd } from "@/framework/entity/core";
+import { Client } from "@/framework/entity/redis";
 
 class Application{
     private _express : express.Express;
@@ -33,7 +35,7 @@ class Application{
     }
 
     private Separator(){
-        if (!this._unitTest) console.log(`==========================================`);
+        if (!this._unitTest) cd(`==========================================`);
     }
 
     private RenderRoutes(){
@@ -55,7 +57,7 @@ class Application{
                 }
             }
         }
-        console.log(table.toString());
+        cd(table.toString());
         return table;
     }
 
@@ -82,11 +84,11 @@ class Application{
                 var ProductionEnvironment = parseInt(process.env.PRODUCTION_ENVIRONMENT ?? "0");
                 if (!this._unitTest) {
                     this.Separator();
-                    console.log(`Port: ${this._port}`);
-                    console.log(`Environment: ${ProductionEnvironment === 1 ? "PRODUCTION" : "DEBUG"}`);
-                    console.log(`API Version: ${process.env.API_VERSION}`);
+                    cd(`Port: ${this._port}`);
+                    cd(`Environment: ${ProductionEnvironment === 1 ? "PRODUCTION" : "DEBUG"}`);
+                    cd(`API Version: ${process.env.API_VERSION}`);
                     this.Separator();
-                    console.log(`Server is listening on port ${this._port}\n`);
+                    cd(`Server is listening on port ${this._port}\n`);
                 }
             });
             if (!this._unitTest) this.RenderRoutes();
@@ -102,8 +104,13 @@ class Application{
         return this._express;
     }
 
-    public getServer() : Server{
-        return this._listener;
+    public getUnitTest(){
+        return this._unitTest;
+    }
+
+    public close(){
+        this._listener.close();
+        Client().close();
     }
 }
 export default Application;
