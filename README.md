@@ -146,6 +146,54 @@ export {OtherTable, Example};
  
  *__หมายเหตุ__ ห้ามแก้ไขไฟล์ schema.prisma, กรณีที่จะแก้ไข Database Provider ให้แก้ไขที่ connection.prisma เท่านั้น*
  
+ ดึงข้อมูลจาก Database ด้วย Pagination
+ ตัวอย่าง
+ ```typescript
+ import {Example} from "@/framework/database";
+ //..
+ 
+ const currentPage = 1;
+ const dataPerPage = 10;
+ const Options = {
+   orderBy: {
+     id: "desc"
+   },
+   where: {
+     status: 1
+   }
+ };
+ const {result, header} = await Example.findAllPagination(currentPage, dataPerPage, Options);
+ // dataPerPage default value is 10, you can pass null value to this variable
+ ```
+ 
+ **Methods**
+ - table()   
+ *เรียก PrismaClient instance*
+ - findAll(Options?: any)   
+ *ค้นหาทั้งหมด (ได้ค่าเป็น array)*
+ - findAllPagination(CurrentPage: number, Limit: number = 10, Options?: any)    
+ *ค้นหาทั้งหมด (ได้ค่าเป็น array แบบแบ่งหน้าให้แล้ว)*
+ - findMany(Query: any, Options: any = null)    
+ *ค้นหาโดยใช้เงื่อนไข where (ผลลัพท์เป็น array)*
+ - findUnique(Query: any, Options: any = null)    
+ *ค้นหาโดยใช้เงื่อนไข where และผลลัพท์จะได้ค่า Object ของผลลัพท์นั้นๆ หากไม่เจอจะเป็น null*
+ - insert(Data: any, Options: any = null)    
+ *สร้างข้อมูลในฐานข้อมูล ผลลัพท์จะเป็นข้อมูลที่พึ่งสร้าง*
+ - insertMany(Data: [any], Options: any = null)    
+ *สร้างข้อมูลหลายข้อมูลพร้อมกัน ผลลัพท์คือ { count: 3 }	(จำนวนตัวเลขของข้อมูลที่ถูกสร้าง)*
+ - update(Query: any, Data: any, Options: any = null)    
+ *แก้ไขข้อมูลในฐานข้อมูล ผลลัพท์จะเป็นข้อมูลที่พึ่งแก้ไขไป*
+ - updateMany(Query: any, Data: any, Options: any = null)    
+ *แก้ไขข้อมูลหลายข้อมูลพร้อมกัน ผลลัพท์คือ { count: 3 }	(จำนวนตัวเลขของข้อมูลที่ถูกแก้ไข)*
+ - upsert(Query: any, UpdateData: any, CreateData: any, Options: any = null)    
+ *แก้ไขข้อมูลที่มีอยู่หรือสร้างข้อมูลใหม่ ผลลัพท์จะเป็นข้อมูลที่พึ่งแก้ไขไป*
+ - delete(Query: any, Options: any = null)    
+ *ลบข้อมูลที่มีอยู่ ผลลัพท์จะได้ข้อมูลที่พึ่งลบไป*
+ - deleteMany(Query: any, Options: any = null)    
+ *ลบหลายรายการในฐานข้อมูล ผลลัพท์คือ { count: 3 }	(จำนวนตัวเลขของข้อมูลที่ถูกลบไป)*
+ - truncate()    
+ *ลบข้อมูลทั้งหมดในตารางบัจจุบัน*
+ 
  ### - การสร้าง Entity
  ให้สร้างโฟลเดอร์ในการเก็บ entity ให้เป็นหมวดหมู่ตามความเหมาะสม เช่น
  ```
