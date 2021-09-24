@@ -6,6 +6,8 @@ import { Server } from 'http';
 import { cd } from "@/framework/entity/core";
 import { Client } from "@/framework/entity/redis";
 import * as Databases from "@/framework/database";
+import cluster from 'cluster';
+import { cpus } from 'os';
 
 class Application{
     private _express : express.Express;
@@ -16,6 +18,7 @@ class Application{
     private _routes: any[] = [];
     private _unitTest: boolean = false;
     private _listener: Server = new Server;
+    private _workers: number = 0;
 
     constructor(){
         this._express = express();
@@ -76,23 +79,58 @@ class Application{
         this.RegisterRoute(error, `${this._overrideRoute}/`);
     }
 
+    public IsClusterEnabled(){
+        return process.env.SELF_CLUSTER === '1' && !this.getUnitTest();
+    }
+
+    private ClusterType(){
+        return (this.IsClusterEnabled()) ? ((cluster.isMaster) ? "Primary" : "Worker") : "Master";
+    }
+
+    private RenderInfo(){
+        if (!this._unitTest && cluster.isMaster) {
+            const numCPUs = cpus().length;
+            const ProductionEnvironment = parseInt(process.env.PRODUCTION_ENVIRONMENT ?? "0");
+            this.RenderRoutes();
+            this.Separator();
+            cd(`Port: ${this._port}`);
+            cd(`Environment: ${ProductionEnvironment === 1 ? "PRODUCTION" : "DEBUG"}`);
+            cd(`Cluster Mode: ${this.IsClusterEnabled() ? "Enabled" : "Disabled"}`);
+            cd(`Cluster Type: ${this.ClusterType()}`);
+            cd(`Number of CPUs: ${numCPUs}`);
+            cd(`API Version: ${process.env.API_VERSION}`);
+            this.Separator();
+            //cd(`Server is listening on port ${this._port}\n`);
+        }
+    }
+
     public async Start(PORT : number = 3000){
         this.PreSetup();
         this.Setup().then(()=>{
+            const numCPUs = cpus().length;
             this.PostSetup(); // Event delegate
-            this._port = process.env.PORT || PORT;
-            this._listener = this._express.listen(this._port, ()=>{
-                var ProductionEnvironment = parseInt(process.env.PRODUCTION_ENVIRONMENT ?? "0");
-                if (!this._unitTest) {
-                    this.Separator();
-                    cd(`Port: ${this._port}`);
-                    cd(`Environment: ${ProductionEnvironment === 1 ? "PRODUCTION" : "DEBUG"}`);
-                    cd(`API Version: ${process.env.API_VERSION}`);
-                    this.Separator();
-                    cd(`Server is listening on port ${this._port}\n`);
+
+            // Cluster Configuration
+            if(this.IsClusterEnabled()) {
+                if(cluster.isMaster){
+                    for (var i = 0; i < numCPUs; i++) cluster.fork();
+                    cluster.on('exit', (worker) => {
+                        cd(`Worker #${worker.id} is dead`);
+                        this._workers -= 1;
+                        cluster.fork();
+                    });
+    
+                    cluster.on('listening', (address)=>{
+                        this._workers += 1;
+                    });
+                    
+                    this.RenderInfo();
+                    return;
                 }
-            });
-            if (!this._unitTest) this.RenderRoutes();
+            }
+
+            this._port = process.env.PORT || PORT;
+            this._listener = this._express.listen(this._port, ()=>cd(`${this.ClusterType()} #${process.pid} started`));
         });
     }
 
@@ -123,6 +161,11 @@ class Application{
     }
 
     public close(){
+        // Close cluster
+        if(this.IsClusterEnabled()){
+            for(let id in cluster.workers) cluster.workers[id]?.kill();
+            cluster.off
+        }
         this._listener.close();
         Client().close();
     }
