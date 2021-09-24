@@ -209,6 +209,28 @@ export {OtherTable, Example};
  npm run test
  ``` 
  
+ ### - Built-In Entities
+ - JWT Validator Middleware *(auth/required-token)*
+ ใช้สำหรับ Router ไหนที่ต้องการข้อมูลของ JWT Token (Middleware ตรวจสอบ JWT Token ที่แนบมาและจำเป็นต้องแนบมาด้วยทุกครั้งในการใช้งาน Route นี้)
+ ```typescript
+ import {RequiredToken} from "@/framework/entity/auth"
+ //..
+ router.use(RequiredToken());
+ ```
+ - JWT Authentication *(auth/login)*
+ 
+ ** Coming Soon **
+ 
+ - Custom Console Log *(core/console-debug)*
+ ฟังก์ชั่นที่ทำเพื่อรองรับการตั้งค่าจาก .env ใช้ทำงานได้กับ production จริง
+ ```typescript
+ import { cd } from "@/framework/entity/core";
+ //..
+ cd(`this is console.log`); //console.log(`this is console.log`);
+ ```
+ - Redis *(redis)*
+
+ ** อ่านเพิ่มเติมที่หัวข้อ *การใช้งาน Redis* **
 
  *Finished!*
  
