@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from genericpath import isdir
 import pathlib
 import os
 import sys
@@ -18,11 +19,31 @@ def deleteFolder(path):
         return True
     except OSError as e:
         return False
+    except:
+        return False
+
+def deleteFile(path):
+    if os.path.exists(path):
+        os.remove(path)
+        return True
+    return False
+
+def ignoreList():
+    return [".github", "update"]
 
 def moveFiles(source, dest):
     file_names = os.listdir(source)
     complete = 0
     for file_name in file_names:
-        shutil.move(os.path.join(source, file_name), dest)
+        if(file_name in ignoreList()):
+            continue
+        sourceRaw = os.path.join(source, file_name)
+        destRaw = os.path.join(dest, file_name)
+        
+        if os.path.isdir(sourceRaw):
+            moveFiles(sourceRaw, destRaw)
+        else:
+            shutil.move(sourceRaw, destRaw)
+
         complete+=1
     return complete
