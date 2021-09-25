@@ -48,6 +48,7 @@ try:
     else:
         print("Remove packages cache failure")
 except:
+    path.deleteFolder(rootPath)
     print(f"Unable to update packages")
 finally:
     print(f"Complete {completeTask}/{totalTask} task")
