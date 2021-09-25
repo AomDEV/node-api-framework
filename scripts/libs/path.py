@@ -29,18 +29,19 @@ def deleteFile(path):
     return False
 
 def ignoreList():
-    return [".github", "update"]
+    return [".github", "update", "connection.prisma", ".env", "package-lock.json"]
 
 def moveFiles(source, dest):
     file_names = os.listdir(source)
     complete = 0
     for file_name in file_names:
-        if(file_name in ignoreList()):
-            continue
         sourceRaw = os.path.join(source, file_name)
         destRaw = os.path.join(dest, file_name)
+
+        if(file_name in ignoreList() and os.path.exists(destRaw)):
+            continue
         
-        if os.path.isdir(sourceRaw):
+        if os.path.isdir(sourceRaw) and os.path.exists(destRaw):
             moveFiles(sourceRaw, destRaw)
         else:
             shutil.move(sourceRaw, destRaw)
