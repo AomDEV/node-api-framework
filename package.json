@@ -13,7 +13,7 @@
     "production": "ts-node dist/app.js",
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker-compose down",
-    "framework:update": "python scripts/framework-update.py"
+    "framework:update": "python scripts/framework-update.py && npm install"
   },
   "jest": {
     "moduleDirectories": [
